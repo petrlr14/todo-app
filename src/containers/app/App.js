@@ -7,6 +7,8 @@ class App extends Component {
     super(props);
     this.state = {
       title: '',
+      tasks: [],
+      id: 0,
     };
   }
 
@@ -15,25 +17,38 @@ class App extends Component {
     this.setState({ title: value });
   };
 
+  onSubmit = (e) => {
+    e.preventDefault();
+    const { title, tasks, id } = this.state;
+    const newTask = {
+      id,
+      title,
+    };
+    this.setState({
+      tasks: [...tasks, newTask],
+      title: '',
+      id: id + 1,
+    });
+  };
+
+  onDelete = (id) => {
+    const newTasks = this.state.tasks.filter((task) => {
+      return task.id !== id;
+    });
+    this.setState({
+      tasks: newTasks,
+    });
+  };
+
   render() {
     return (
       <div>
-        <form>
-          <dl>
-            <dt>
-              <label htmlFor="title">Titulo</label>
-            </dt>
-            <dt>
-              <input
-                id="title"
-                value={this.state.title}
-                onChange={this.onChange}
-              />
-            </dt>
-          </dl>
+        <form onSubmit={this.onSubmit}>
+          <label htmlFor="title">Titulo</label>
+          <input id="title" value={this.state.title} onChange={this.onChange} />
           <button type="submit">Agregar</button>
         </form>
-        <List />
+        <List tasks={this.state.tasks} onDelete={this.onDelete} />
       </div>
     );
   }

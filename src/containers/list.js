@@ -1,13 +1,12 @@
 import Card from './../components/card';
 
-const List = () => {
+const List = (props) => {
+  const { tasks, onDelete } = props;
   return (
     <div>
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
+      {tasks.map((task) => (
+        <Card key={task.id} task={task} onDelete={onDelete} />
+      ))}
     </div>
   );
 };
